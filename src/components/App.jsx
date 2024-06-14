@@ -65,15 +65,22 @@ export default function App() {
     }
 
     const handleCheckAnswers = () => {
-        setCheckAnswers(true)
-        let count = 0
+        let totalAnswersCount = 0
+        let correctAnswersCount = 0
         questions.forEach(question => {
             const selectedAnswer = document.querySelector(`input[name="${question.id}"]:checked`)
-            if (selectedAnswer && selectedAnswer.value === question.correctAnswer) {
-                count++
+            if (selectedAnswer) {
+                totalAnswersCount++
+                if (selectedAnswer.value === question.correctAnswer) {
+                    correctAnswersCount++
+                }
             }
         })
-        setCorrectCount(count)
+        setCorrectCount(correctAnswersCount)
+
+        if (totalAnswersCount === questions.length) {
+            setCheckAnswers(true)
+        }
     }
 
     const getQuestionScreenEl = (
@@ -108,7 +115,7 @@ export default function App() {
                         <h2 className="score-text">You scored {correctCount}/{questions.length} correct answers</h2>
                         <button className="questions-btn" onClick={startNewGame}>Play again</button>
                     </div>
-                    : <button className="questions-btn" onClick={handleCheckAnswers}>Check answers</button>}
+                    : <button className="questions-btn" id="checkBtn" onClick={handleCheckAnswers}>Check answers</button>}
             </div>
             : <StartScreen handleClick={startNewGame}/>}
         </main>
